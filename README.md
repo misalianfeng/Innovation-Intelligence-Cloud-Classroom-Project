@@ -1,4 +1,2 @@
-\##   Innovation-Intelligence-Cloud-Classroom-Project
-
-
+Innovation-Intelligence-Cloud-Classroom-Project
 
