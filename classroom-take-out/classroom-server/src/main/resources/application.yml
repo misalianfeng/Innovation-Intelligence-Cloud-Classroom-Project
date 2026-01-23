@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: classroom-server
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # ==== 阿里云 MySQL 连接模板 ====
+    # 请把下面这三项改成你自己的云数据库配置
+
+    url: jdbc:mysql://rm-bp10yoi2y86p95c9apo.mysql.rds.aliyuncs.com:3306/train_yun?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8
+    username: yun
+    password: '@Yun@Yun'
+
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+server:
+  port: 8080
+
+jwt:
+  # 单位：毫秒，这里示例为 2 小时
+  expire-ms: 7200000
+

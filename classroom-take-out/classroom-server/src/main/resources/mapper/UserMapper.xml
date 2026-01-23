@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+  用户表 Mapper XML
+  注意：请确保此处的字段与云端数据库 user 表保持一致。
+-->
+<mapper namespace="org.cdjc.classroomserver.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="org.cdjc.classroompojo.entity.User">
+        <id     column="user_id"         property="userId"/>
+        <result column="username"        property="username"/>
+        <result column="phone"           property="phone"/>
+        <result column="wechat_phone"    property="wechatPhone"/>
+        <result column="avatar"          property="avatar"/>
+        <result column="status"          property="status"/>
+        <result column="role_id"         property="roleId"/>
+        <result column="last_login_time" property="lastLoginTime"/>
+        <result column="create_time"     property="createTime"/>
+        <result column="password"        property="password"/>
+        <result column="email"           property="email"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        user_id, username, phone, wechat_phone, avatar,
+        status, role_id, last_login_time, create_time,
+        password, email
+    </sql>
+
+    <select id="selectByUsername" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where username = #{username}
+        limit 1
+    </select>
+
+    <select id="selectByEmail" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where email = #{email}
+        limit 1
+    </select>
+
+    <insert id="insert" parameterType="org.cdjc.classroompojo.entity.User" useGeneratedKeys="true" keyProperty="userId">
+        insert into user
+        (username, phone, wechat_phone, avatar,
+         status, role_id, last_login_time, create_time,
+         password, email)
+        values
+        (#{username}, #{phone}, #{wechatPhone}, #{avatar},
+         #{status}, #{roleId}, #{lastLoginTime}, #{createTime},
+         #{password}, #{email})
+    </insert>
+
+    <update id="updateLastLoginTime">
+        update user
+        set last_login_time = now()
+        where user_id = #{userId}
+    </update>
+
+</mapper>
+
+

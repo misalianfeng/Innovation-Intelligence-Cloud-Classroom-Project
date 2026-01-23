@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>管理后台 - 首页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            background: #f5f7fb;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 240px;
+            background: #1f2937;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #374151;
+        }
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .sidebar-subtitle {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+        .sidebar-menu {
+            flex: 1;
+            padding: 16px 0;
+            overflow-y: auto;
+        }
+        .menu-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            color: #d1d5db;
+        }
+        .menu-item:hover {
+            background: #374151;
+        }
+        .menu-item.active {
+            background: #2563eb;
+            color: #fff;
+        }
+        .menu-item-icon {
+            width: 20px;
+            margin-right: 12px;
+            text-align: center;
+        }
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid #374151;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .user-name {
+            flex: 1;
+            font-size: 14px;
+        }
+        .logout-btn {
+            width: 100%;
+            padding: 8px;
+            background: #dc2626;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+        .logout-btn:hover {
+            background: #b91c1c;
+        }
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .header {
+            background: #fff;
+            padding: 16px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .header-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        .content-area {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+        .welcome-card {
+            background: #fff;
+            padding: 32px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .welcome-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+        .welcome-text {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .module-list {
+            margin-top: 24px;
+        }
+        .module-item {
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 3px solid #2563eb;
+        }
+        .module-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+        .module-desc {
+            font-size: 13px;
+            color: #6b7280;
+        }
+        .coming-soon {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-title">创智云课堂管理</div>
+        <div class="sidebar-subtitle">Classroom  Admin</div>
+    </div>
+    <div class="sidebar-menu">
+        <div class="menu-item active" onclick="switchModule('dashboard')">
+            <div class="menu-item-icon">📊</div>
+            <div>数据概览</div>
+        </div>
+        <div class="menu-item" onclick="switchModule('users')">
+            <div class="menu-item-icon">👥</div>
+            <div>用户管理</div>
+        </div>
+        <div class="menu-item" onclick="switchModule('orders')">
+            <div class="menu-item-icon">📦</div>
+            <div>订单管理</div>
+        </div>
+        <div class="menu-item" onclick="switchModule('products')">
+            <div class="menu-item-icon">🍔</div>
+            <div>商品管理</div>
+        </div>
+        <div class="menu-item" onclick="switchModule('settings')">
+            <div class="menu-item-icon">⚙️</div>
+            <div>系统设置</div>
+        </div>
+    </div>
+    <div class="sidebar-footer">
+        <div class="user-info">
+            <div class="user-avatar" id="userAvatar">A</div>
+            <div class="user-name" id="userName">管理员</div>
+        </div>
+        <button class="logout-btn" onclick="logout()">退出登录</button>
+    </div>
+</div>
+<div class="main-content">
+    <div class="header">
+        <div class="header-title" id="pageTitle">数据概览</div>
+    </div>
+    <div class="content-area" id="contentArea">
+        <div class="welcome-card">
+            <div class="welcome-title">欢迎使用管理后台</div>
+            <div class="welcome-text">
+                这里是创智云课堂系统的管理后台，您可以通过左侧菜单访问各个管理模块。
+            </div>
+            <div class="module-list">
+                <div class="module-item">
+                    <div class="module-title">数据概览 <span class="coming-soon">待开发</span></div>
+                    <div class="module-desc">查看系统整体数据统计和运营概况</div>
+                </div>
+                <div class="module-item">
+                    <div class="module-title">用户管理 <span class="coming-soon">待开发</span></div>
+                    <div class="module-desc">管理系统用户，包括用户信息查看、状态管理等</div>
+                </div>
+                <div class="module-item">
+                    <div class="module-title">订单管理 <span class="coming-soon">待开发</span></div>
+                    <div class="module-desc">管理订单信息，处理订单状态等</div>
+                </div>
+                <div class="module-item">
+                    <div class="module-title">课程管理 <span class="coming-soon">待开发</span></div>
+                    <div class="module-desc">管理课程信息，包括课程上架、下架等</div>
+                </div>
+                <div class="module-item">
+                    <div class="module-title">系统设置 <span class="coming-soon">待开发</span></div>
+                    <div class="module-desc">系统配置和参数设置</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 检查登录状态
+    const token = localStorage.getItem('admin_jwt');
+    if (!token) {
+        window.location.href = '/admin-login.html';
+    }
+
+    // 加载用户信息
+    function loadUserInfo() {
+        try {
+            const userData = localStorage.getItem('admin_user');
+            if (userData) {
+                const user = JSON.parse(userData);
+                const username = user.username || '管理员';
+                document.getElementById('userName').textContent = username;
+                document.getElementById('userAvatar').textContent = username.charAt(0).toUpperCase();
+            }
+        } catch (e) {
+            console.error('加载用户信息失败', e);
+        }
+    }
+
+    // 切换模块
+    function switchModule(module) {
+        // 更新菜单激活状态
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        event.target.closest('.menu-item').classList.add('active');
+
+        // 更新标题
+        const titles = {
+            'dashboard': '数据概览',
+            'users': '用户管理',
+            'orders': '订单管理',
+            'products': '商品管理',
+            'settings': '系统设置'
+        };
+        document.getElementById('pageTitle').textContent = titles[module] || '管理后台';
+
+        // 显示模块内容（这里只显示待开发提示）
+        const content = `
+                <div class="welcome-card">
+                    <div class="welcome-title">${titles[module]}</div>
+                    <div class="welcome-text">
+                        该功能模块正在开发中，敬请期待...
+                        <br><br>
+                        您可以通过左侧菜单切换到其他模块。
+                    </div>
+                </div>
+            `;
+        document.getElementById('contentArea').innerHTML = content;
+    }
+
+    // 退出登录
+    function logout() {
+        if (confirm('确定要退出登录吗？')) {
+            localStorage.removeItem('admin_jwt');
+            localStorage.removeItem('admin_user');
+            window.location.href = '/admin-login.html';
+        }
+    }
+
+    // 初始化
+    loadUserInfo();
+</script>
+</body>
+</html>
