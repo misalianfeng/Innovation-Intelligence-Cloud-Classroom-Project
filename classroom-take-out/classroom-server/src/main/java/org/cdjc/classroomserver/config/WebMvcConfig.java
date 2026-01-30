@@ -3,6 +3,7 @@ package org.cdjc.classroomserver.config;
 import org.cdjc.classroomserver.intercepotor.AdminJwtInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -12,16 +13,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
+    @NonNull
     private final AdminJwtInterceptor adminJwtInterceptor;
 
     @Autowired
-    public WebMvcConfig(AdminJwtInterceptor adminJwtInterceptor) {
+    public WebMvcConfig(@NonNull AdminJwtInterceptor adminJwtInterceptor) {
         this.adminJwtInterceptor = adminJwtInterceptor;
     }
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(adminJwtInterceptor)
+public void addInterceptors(@NonNull InterceptorRegistry registry) {
+        registry.addInterceptor( adminJwtInterceptor)
                 .addPathPatterns("/api/admin/**")
                 .excludePathPatterns(
                         "/api/admin/auth/login",

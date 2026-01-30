@@ -3,8 +3,10 @@ package org.cdjc.classroomserver.intercepotor;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
+
 import org.cdjc.classroomserver.util.JwtUtil;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -14,17 +16,17 @@ import java.io.IOException;
 
 /**
  * 简单的 JWT 拦截器：
- * - 放行登录接口、静态页面（例如 /admin/login.html）、静态资源
+ * - 登录接口、静态页面（例如 /admin/login.html）、静态资源
  * - 其他 /api/admin/** 接口都需要携带合法 token
  */
 @Component
 public class AdminJwtInterceptor implements HandlerInterceptor {
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
         String uri = request.getRequestURI();
 
-        // 1. 放行登录与注册接口
+        // 1. 登录与注册接口
         if (uri.startsWith("/api/admin/auth/login") || uri.startsWith("/api/admin/auth/register")) {
             return true;
         }
@@ -39,10 +41,6 @@ public class AdminJwtInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        // 3. 只对 /api/admin/** 做 JWT 校验，其它业务接口按需调整
-        if (!uri.startsWith("/api/admin/")) {
-            return true;
-        }
 
         String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -51,7 +49,7 @@ public class AdminJwtInterceptor implements HandlerInterceptor {
         String token = authHeader.substring(7);
         try {
             Claims claims = JwtUtil.parseToken(token);
-            // 简单示例：在请求中保存一下用户基础信息，后续 Controller 可以从 request 中取
+            // 在请求中保存一下用户基础信息，后续 Controller 可以从 request 中取
             request.setAttribute("adminUserId", claims.get("userId"));
             request.setAttribute("adminUsername", claims.get("username"));
             request.setAttribute("adminRoleId", claims.get("roleId"));

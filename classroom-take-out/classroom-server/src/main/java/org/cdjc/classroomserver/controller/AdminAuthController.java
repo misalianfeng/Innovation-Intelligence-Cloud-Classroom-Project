@@ -61,7 +61,8 @@ public class AdminAuthController {
         claims.put("userId", user.getUserId());
         claims.put("username", user.getUsername());
         claims.put("roleId", user.getRoleId());
-        String token = JwtUtil.generateToken(String.valueOf(user.getUserId()), claims, jwtExpireMs);
+        String token = JwtUtil.generateToken(String.valueOf(user.getUserId()), claims);
+
 
         // 4. 返回成功响应
         resp.put("success", true);
