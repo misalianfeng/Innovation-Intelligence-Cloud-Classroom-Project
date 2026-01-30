@@ -3,7 +3,6 @@ package org.cdjc.classroomserver.controller;
 import org.cdjc.classroompojo.entity.User;
 import org.cdjc.classroomserver.service.AdminAuthService;
 import org.cdjc.classroomserver.util.JwtUtil;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -21,8 +20,6 @@ public class AdminAuthController {
 
     private final AdminAuthService adminAuthService;
 
-    @Value("${jwt.expire-ms:7200000}")
-    private long jwtExpireMs;
 
     public AdminAuthController(AdminAuthService adminAuthService) {
         this.adminAuthService = adminAuthService;
